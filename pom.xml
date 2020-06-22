@@ -353,6 +353,28 @@
                         </executions>
                     </plugin>
                 </plugins>
+                <plugin>
+                    <groupId>org.openapitools</groupId>
+                    <artifactId>openapi-generator-maven-plugin</artifactId>
+                    <!-- RELEASE_VERSION -->
+                    <version>4.3.1</version>
+                    <!-- /RELEASE_VERSION -->
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>${project.basedir}/swagger/swagger.json</inputSpec>
+                                <generatorName>java</generatorName>
+                                <output>${project.build.directory}/swagger/openapi.yml</output>
+                                <configOptions>
+                                   <sourceFolder>src/java/main</sourceFolder>
+                                </configOptions>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </build>
         </profile>
         <!-- Run the Google Error Prone checker to make sure we didn't make any silly mistakes -->
