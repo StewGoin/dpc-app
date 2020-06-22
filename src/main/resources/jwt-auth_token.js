@@ -79,10 +79,10 @@ const header = {
 }
 var sPayload = JSON.stringify(data);
 var sJWT = jsrsasign.jws.JWS.sign("RS384", header, sPayload, secret);
-console.log(sJWT)
+//console.log(sJWT)
 fetch('https://sandbox.dpc.cms.gov/api/v1/Token/auth', {
     method: 'POST',
-    header: 'ACCEPT: application/json',
+    header: 'ACCEPT: application/x-www-form-urlencoded',
     body: new URLSearchParams({
         scope: "system/*.*",
         grant_type: "client_credentials",
@@ -92,7 +92,23 @@ fetch('https://sandbox.dpc.cms.gov/api/v1/Token/auth', {
 }).then(response => {
     if (response.ok) {
         response.json().then(json => {
-            console.log(json);
+ //           console.log(json);
+
+            var url = "https://sandbox.dpc.cms.gov/api/v1/Patient?identifier=6SE4F00AA00"
+            fetch(url, {
+                method: 'get',
+                headers: {
+                    "Accept": "application/fhir+json",
+                    "Authorization": `Bearer W3sidiI6MiwibCI6Imh0dHBzOi8vc2FuZGJveC5kcGMuY21zLmdvdi9hcGkiLCJpIjoiODk5NzBiMDQtMGI4Ni00NGY4LTkzNTUtOWQzMTM2YTFlMmZjIiwiYyI6W3siaTY0IjoiWkhCalgyMWhZMkZ5YjI5dVgzWmxjbk5wYjI0Z1BTQXkifSx7Imk2NCI6IlpYaHdhWEpsY3lBOUlESXdNakV0TURVdE1qZFVNakk2TkRRNk1EVXVNVE00T0RjMVdnIn0seyJpNjQiOiJiM0puWVc1cGVtRjBhVzl1WDJsa0lEMGdNelV4Wm1KaU5XWXRaakptT1MwME1EazBMV0pqTm1ZdE1tSXpOakF3WW1JMU5tVTUifSx7ImwiOiJsb2NhbCIsImk2NCI6IkFxQ0JhSHFnZ1doNmV0cjJmRnRhalg2RWNNaUktUGUydkNGaWNNZjltal9Wcnp0OEJTS1RCRVhzemtLcU11R1lIOEVzNmhjejVleWxOamVzdGhzSHJ2U0NGRnJwTDMwNGpnU2w2YWVZay0xbzJtZDBFWl9SeE1pQkY3S2ZLVHd3S1gxaUdYcjNoRHdCRzJ6UXlDeEJGWnZOdGU2NGFoNGd1aFdkNFVyVm5GV1d4SjZmNkNBZWZsOTBMTTdoc1NxYWxVLUFBM2hnWVhla01lNURWZyIsInY2NCI6IlNaeTI3cm1VeFVJdjlRMXpwZ2FiLU5SWmlIYTRtd09BbWNSaEo5Zkh0bEVfeU5vSXF4V2sxbGlHdlhOZW91QW9FX3N2d2JIcE1DXzhkRExfSFd4TmdBYWNCdlAtSGJsMCJ9LHsiaTY0IjoiWlhod2FYSmxjeUE5SURJd01qQXRNRFl0TVRoVU1EVTZNalk2TXpFdU5ESTJPRFkxV2cifV0sInM2NCI6IjBTaUQxYkFsaFAxVWhDUjF1cHJpMThTUWV4Z19wVVJyaThCWkExYVpVSEkifSx7InYiOjIsImkiOiJcdTAwMDLCoMKBaHrCoMKBaHp6w5rDtnxbWsKNfsKEcMOIwojDuMO3wrbCvCFicMOHw73Cmj_DlcKvO3xcdTAwMDVcIsKTXHUwMDA0RcOsw45Cwqoyw6HCmFx1MDAxRsOBLMOqXHUwMDE3M8Olw6zCpTY3wqzCtlx1MDAxQlx1MDAwN8Kuw7TCglx1MDAxNFrDqS99OMKOXHUwMDA0wqXDqcKnwpjCk8OtaMOaZ3RcdTAwMTHCn8ORw4TDiMKBXHUwMDE3wrLCnyk8MCl9Ylx1MDAxOXrDt8KEPFx1MDAwMVx1MDAxQmzDkMOILEFcdTAwMTXCm8ONwrXDrsK4alx1MDAxRSDCulx1MDAxNcKdw6FKw5XCnFXClsOEwp7Cn8OoIFx1MDAxRX5fdCzDjsOhwrEqwprClU_CgFx1MDAwM3hgYXfCpDHDrkNWIiwiczY0IjoieWtWWWtOWnNQQXJmQXp1YTNQcUxUeW10MDF1QVZrQng1RHNxWDdLUFhidyJ9XQ==`
+                }
+
+            }).then(patresponse => {
+                if (patresponse.ok) {
+                    patresponse.json().then(patjson => {
+                        console.log(patjson);
+                    });
+                }
+            });
         });
     }
 });
