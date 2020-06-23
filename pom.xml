@@ -312,6 +312,22 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>swagger-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.cjnygard</groupId>
+                        <artifactId>rest-maven-plugin</artifactId>
+                        <version>0.1.4</version>
+                        <configuration>
+
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
         <!--        CI Profile that adds JaCoCo to the Docker containers and runs the IT report phase correctly-->
         <profile>
             <id>ci</id>
@@ -352,7 +368,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                </plugins>
+
                 <plugin>
                     <groupId>org.openapitools</groupId>
                     <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -367,7 +383,7 @@
                             <configuration>
                                 <inputSpec>${project.basedir}/swagger/swagger.json</inputSpec>
                                 <generatorName>java</generatorName>
-                                <output>${project.build.directory}/swagger/openapi.yml</output>
+                                <output>${project.basedir}/swagger/openapi.yml</output>
                                 <configOptions>
                                    <sourceFolder>src/java/main</sourceFolder>
                                 </configOptions>
@@ -375,6 +391,7 @@
                         </execution>
                     </executions>
                 </plugin>
+                </plugins>
             </build>
         </profile>
         <!-- Run the Google Error Prone checker to make sure we didn't make any silly mistakes -->
