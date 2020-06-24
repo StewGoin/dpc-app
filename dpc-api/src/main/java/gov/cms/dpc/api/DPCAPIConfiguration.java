@@ -16,12 +16,18 @@ import io.dropwizard.client.JerseyClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
-
+import io.swagger.annotations.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 public class DPCAPIConfiguration extends TypesafeConfiguration implements IDPCDatabase, IDPCQueueDatabase, IDPCAuthDatabase, IDPCFHIRConfiguration, BlueButtonBundleConfiguration {
 
+    @SwaggerDefinition(
+
+        schemes = {SwaggerDefinition.Scheme.HTTPS},
+        host = "sandbox.dpc.cms.gov", //<- this should be taken from environment
+        basePath = "/api"
+    )
     @NotEmpty
     private String exportPath;
     @Valid
