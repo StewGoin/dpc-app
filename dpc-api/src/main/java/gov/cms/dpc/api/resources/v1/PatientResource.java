@@ -29,6 +29,8 @@ import io.swagger.annotations.*;
 import org.eclipse.jetty.http.HttpStatus;
 import org.hl7.fhir.dstu3.model.*;
 import org.hl7.fhir.instance.model.api.IBaseOperationOutcome;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -50,6 +52,8 @@ public class PatientResource extends AbstractPatientResource {
     // TODO: This should be moved into a helper class, in DPC-432.
     // This checks to see if the Identifier is fully specified or not.
     private static final Pattern IDENTIFIER_PATTERN = Pattern.compile("^[a-z0-9]+://.*$");
+
+    private static final Logger logger = LoggerFactory.getLogger(PatientResource.class);
 
     private final IGenericClient client;
     private final FhirValidator validator;
@@ -199,10 +203,17 @@ public class PatientResource extends AbstractPatientResource {
             throw new WebApplicationException(HttpStatus.UNAUTHORIZED_401);
         }
 
-        Resource result = dataService.retrieveData(orgId, practitionerId, List.of(patientMbi), APIHelpers.fetchTransactionTime(bfdClient),
+        Resource result = dataService.retrieveData(orgId, practitionerId, List.of(patientMbi),
+                APIHelpers.fetchTransactionTime(bfdClient),
                 ResourceType.Patient, ResourceType.ExplanationOfBenefit, ResourceType.Coverage);
         if (ResourceType.Bundle.equals(result.getResourceType())) {
             return (Bundle) result;
+        }
+
+        ResourceType resultType = result.getResourceType();
+        logger.error("Data service result for Patient/$everything request should have been a Bundle, but was {}", resultType);
+        if (ResourceType.OperationOutcome.equals(resultType)) {
+            logger.error("Data service returned OperationOutcome for Patient/$everything request: {}", result);
         }
 
         throw new WebApplicationException(HttpStatus.INTERNAL_SERVER_ERROR_500);
