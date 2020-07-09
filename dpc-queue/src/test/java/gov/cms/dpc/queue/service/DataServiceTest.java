@@ -25,7 +25,7 @@ import java.util.UUID;
 public class DataServiceTest{
 
     private final UUID aggregatorID = UUID.randomUUID();
-    private final String exportPath = "/tmp";
+    private final String exportPath = "/app/data";
     private DataService dataService;
     private File tmpFile;
 
